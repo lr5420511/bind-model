@@ -52,15 +52,14 @@
     </div>
     <script type="text/javascript" src="./dist/bind-model.js"></script>
     <script type="text/javascript">
-        const model = { level0: { level1: { level2: { value: '' } } } },
-            mo = new ModelOverrider(model);
-        mo.bind('level0.level1.level2.value', document.getElementsByClassName('text')[0], 'dir-model')
-          .bind('level0.level1.level2.value', document.getElementById('model'), 'dir-text', val => val)
-          .bind('level0.level1.level2.value', document.getElementById('text'), 'dir-text', (val, _, prop) => `属性${prop}的值是${val}`)
-          .bind('level0.level1.level2.value', document.getElementById('bind'), 'dir-bind', (el, val) => (el.style.color = /^#[\da-f]{6}$/i.test(val) ? val : '#333'))
-          .bind('level0.level1.level2.value', document.getElementById('show'), 'dir-show')
-          .bind('level0.level1.level2.value', document.getElementById('if'), 'dir-if')
-          .watch('level0.level1.level2.value', (val, old, prop, _, path) => console.log(`全路径${path}，当前属性${prop}的值改变了，${old} -> ${val}`));
+    new ModelOverrider({ level0: { level1: { level2: { value: '' } } } })
+        .bind('level0.level1.level2.value', document.getElementsByClassName('text')[0], 'dir-model')
+        .bind('level0.level1.level2.value', document.getElementById('model'), 'dir-text', val => val)
+        .bind('level0.level1.level2.value', document.getElementById('text'), 'dir-text', (val, _, prop) => `属性${prop}的值是${val}`)
+        .bind('level0.level1.level2.value', document.getElementById('bind'), 'dir-bind', (el, val) => (el.style.color = /^#[\da-f]{6}$/i.test(val) ? val : '#333'))
+        .bind('level0.level1.level2.value', document.getElementById('show'), 'dir-show')
+        .bind('level0.level1.level2.value', document.getElementById('if'), 'dir-if')
+        .watch('level0.level1.level2.value', (val, old, prop, _, path) => console.log(`全路径${path}，当前属性${prop}的值改变了，${old} -> ${val}`));
     </script>
 </body>
 
