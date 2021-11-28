@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="utf8">
+    <title>视图模型绑定</title>
+    <style>
+        body {
+            float: left;
+            width: 100%;
+            margin: 0;
+            overflow: hidden;
+        }
+        .container {
+            width: 90%;
+            margin: 20px auto;
+            border: dashed 1px #ccc;
+        }
+        .line {
+            margin: 20px;
+        }
+        .text {
+            width: 95%;
+            height: 25px;
+            line-height: 100%;
+            font-size: 12px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="line">
+            <input class="text" type="text" />
+        </div>
+        <div class="line">
+            指令MODEL：<span id="model"></span>
+        </div>
+        <div class="line">
+            指令TEXT：<span id="text"></span>
+        </div>
+        <div class="line">
+            指令BIND：<span id="bind">指令BIND导致我的颜色会变</span>
+        </div>
+        <div class="line">
+            指令SHOW：<span id="show">指令SHOW导致我会显示或隐藏</span>
+        </div>
+        <div class="line">
+            指令IF：<span id="if">指令IF导致我会删除或添加</span>
+        </div>
+    </div>
+    <script type="text/javascript" src="./dist/bind-model.js"></script>
+    <script type="text/javascript">
+        const model = { level0: { level1: { level2: { value: '' } } } },
+            mo = new ModelOverrider(model);
+        mo.bind('level0.level1.level2.value', document.getElementsByClassName('text')[0], 'dir-model')
+          .bind('level0.level1.level2.value', document.getElementById('model'), 'dir-text', val => val)
+          .bind('level0.level1.level2.value', document.getElementById('text'), 'dir-text', (val, _, prop) => `属性${prop}的值是${val}`)
+          .bind('level0.level1.level2.value', document.getElementById('bind'), 'dir-bind', (el, val) => (el.style.color = /^#[\da-f]{6}$/i.test(val) ? val : '#333'))
+          .bind('level0.level1.level2.value', document.getElementById('show'), 'dir-show')
+          .bind('level0.level1.level2.value', document.getElementById('if'), 'dir-if')
+          .watch('level0.level1.level2.value', (val, old, prop, _, path) => console.log(`全路径${path}，当前属性${prop}的值改变了，${old} -> ${val}`));
+    </script>
+</body>
+
+</html>
